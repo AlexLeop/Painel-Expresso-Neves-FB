@@ -67,14 +67,14 @@ RUN printf '%s\n' \
     '        proxy_read_timeout 600;' \
     '    }' \
     '    location /integracoes/int/ {' \
-    '        proxy_pass http://expresso-neves-gateway:80/integracoes-api/;' \
+    '        proxy_pass http://expresso-neves-gateway:3000/integracoes-api/;' \
     '        proxy_set_header Host $host;' \
     '        proxy_set_header X-Real-IP $remote_addr;' \
     '        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;' \
     '        proxy_set_header X-Forwarded-Proto $scheme;' \
     '    }' \
     '    location /financeiro/int/ {' \
-    '        proxy_pass http://expresso-neves-gateway:80/financeiro-api/;' \
+    '        proxy_pass http://expresso-neves-gateway:3000/financeiro-api/;' \
     '        proxy_set_header Host $host;' \
     '        proxy_set_header X-Real-IP $remote_addr;' \
     '        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;' \
