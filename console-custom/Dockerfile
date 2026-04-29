@@ -15,16 +15,18 @@ RUN git clone https://github.com/fleetbase/console.git .
 COPY integracoes-engine /build-engine/integracoes-engine
 COPY financeiro-engine /build-engine/financeiro-engine
 
-# 3. Adiciona os nossos engines como dependência local no projeto do console
-# Usamos -W pois o repositório do Fleetbase Console é um Yarn Workspace
-RUN yarn add "file:/build-engine/integracoes-engine" -W
-RUN yarn add "file:/build-engine/financeiro-engine" -W
+# Instala pnpm globalmente pois o console requer pnpm
+RUN npm install -g pnpm
 
-# 4. Instala todas as dependências do console (incluindo os nossos addons recém-linkados)
-RUN yarn install
+# 3. Adiciona os nossos engines como dependência local no projeto do console
+RUN pnpm add "file:/build-engine/integracoes-engine"
+RUN pnpm add "file:/build-engine/financeiro-engine"
+
+# 4. Instala todas as dependências do console (incluindo os nossos addons)
+RUN pnpm install
 
 # 5. Roda o build de produção do Ember
-RUN yarn build --environment=production
+RUN pnpm run build
 
 # STAGE 2: Produção (Nginx Proxy)
 # Agora pegamos a imagem oficial base apenas para usar sua estrutura Nginx pré-configurada
