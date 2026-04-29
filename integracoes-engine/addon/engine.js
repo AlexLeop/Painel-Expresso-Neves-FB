@@ -1,49 +1,27 @@
-import Engine from 'ember-engines/engine';
+import Engine from '@ember/engine';
 import loadInitializers from 'ember-load-initializers';
 import Resolver from 'ember-resolver';
 import config from './config/environment';
+import services from '@fleetbase/ember-core/exports/services';
 
 const { modulePrefix } = config;
+const externalRoutes = ['console', 'extensions'];
 
-const IntegracoesEngine = Engine.extend({
-  modulePrefix,
-  Resolver,
-  dependencies: {
-    services: [
-      'store',
-      'session',
-      'current-user',
-      'fetch',
-      'socket',
-      'media',
-      'app-cache',
-      'url-search-params',
-      'modals-manager',
-      'resource-context-panel',
-      'custom-fields-registry',
-      'table-context',
-      'loader',
-      'filters',
-      'crud',
-      'notifications',
-      'fileQueue',
-      'sidebar',
-      'dashboard',
-      'universe',
-      'universe/menu-service',
-      'universe/registry-service',
-      'universe/hook-service',
-      'universe/widget-service',
-      'universe/extension-manager',
-      'events',
-      'intl',
-      'abilities',
-      'language',
-      { hostRouter: 'router' },
-    ],
-  },
-});
+export default class IntegracoesEngine extends Engine {
+    modulePrefix = modulePrefix;
+    Resolver = Resolver;
+    dependencies = {
+        services,
+        externalRoutes,
+    };
+
+    setupExtension = function (app, engine, universe) {
+        // Registra item "Integrações" no menu de navegação do header
+        universe.registerHeaderMenuItem('Integrações', 'console.integracoes', {
+            icon: 'plug',
+            priority: 100,
+        });
+    };
+}
 
 loadInitializers(IntegracoesEngine, modulePrefix);
-
-export default IntegracoesEngine;
