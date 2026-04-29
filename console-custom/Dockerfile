@@ -22,6 +22,9 @@ RUN npm install -g pnpm
 RUN pnpm add "file:/build-engine/integracoes-engine"
 RUN pnpm add "file:/build-engine/financeiro-engine"
 
+# O pnpm hoisting causa problemas em polyfills implícitos do ember-file-upload, precisamos adicioná-lo explicitamente
+RUN pnpm add "ember-tracked-storage-polyfill"
+
 # 4. Instala todas as dependências do console (incluindo os nossos addons)
 RUN pnpm install
 
@@ -84,4 +87,4 @@ RUN printf '%s\n' \
 
 EXPOSE 4200
 
-CMD ["sh", "-c", "echo '{\"API_HOST\":\"\"}' > /usr/share/nginx/html/fleetbase.config.json && nginx -g 'daemon off;'"]
+CMD ["sh", "-c", "echo '{\"API_HOST\":\"/\"}' > /usr/share/nginx/html/fleetbase.config.json && nginx -g 'daemon off;'"]

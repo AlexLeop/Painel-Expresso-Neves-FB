@@ -5,7 +5,7 @@ import config from './config/environment';
 
 const { modulePrefix } = config;
 
-const IntegracoesEngine = Engine.extend({
+const FinanceiroEngine = Engine.extend({
   modulePrefix,
   Resolver,
   dependencies: {
@@ -21,6 +21,6 @@ const IntegracoesEngine = Engine.extend({
   },
 });
 
-loadInitializers(IntegracoesEngine, modulePrefix);
+loadInitializers(FinanceiroEngine, modulePrefix);
 
-export default IntegracoesEngine;
+export default FinanceiroEngine;
