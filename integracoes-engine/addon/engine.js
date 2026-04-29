@@ -17,6 +17,11 @@ const IntegracoesEngine = Engine.extend({
       'notifications',
       'intl',
       'fetch',
+      'currentUser',
+      'session',
+      'events',
+      'universe',
+      'socket',
     ],
   },
 });

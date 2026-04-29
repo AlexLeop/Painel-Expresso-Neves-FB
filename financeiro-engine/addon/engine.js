@@ -17,6 +17,11 @@ const FinanceiroEngine = Engine.extend({
       'notifications',
       'intl',
       'fetch',
+      'currentUser',
+      'session',
+      'events',
+      'universe',
+      'socket',
     ],
   },
 });
