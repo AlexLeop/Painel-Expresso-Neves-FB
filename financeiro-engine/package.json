@@ -4,8 +4,8 @@
   "description": "Addon Ember JS para a Aba Financeira do Fleetbase Console",
   "keywords": [
     "ember-addon",
-    "fleetbase",
-    "engine"
+    "fleetbase-extension",
+    "ember-engine"
   ],
   "dependencies": {
     "ember-cli-htmlbars": "^6.0.1",

@@ -4,7 +4,8 @@
   "description": "Extensão Fleetbase para gerenciamento de integrações com parceiros (White Label).",
   "keywords": [
     "ember-addon",
-    "fleetbase-extension"
+    "fleetbase-extension",
+    "ember-engine"
   ],
   "dependencies": {
     "ember-cli-htmlbars": "^6.0.0",
