@@ -1,1 +1,0 @@
-* * * * * php /fleetbase/api/artisan schedule:run
