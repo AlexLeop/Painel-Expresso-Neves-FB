@@ -1,0 +1,20 @@
+{
+  "name": "@fleetbase/financeiro-engine",
+  "version": "1.0.0",
+  "description": "Addon Ember JS para a Aba Financeira do Fleetbase Console",
+  "keywords": [
+    "ember-addon",
+    "fleetbase",
+    "engine"
+  ],
+  "dependencies": {
+    "ember-cli-htmlbars": "^6.0.1",
+    "ember-cli-babel": "^7.26.11"
+  },
+  "ember": {
+    "edition": "octane"
+  },
+  "ember-addon": {
+    "configPath": "tests/dummy/config"
+  }
+}

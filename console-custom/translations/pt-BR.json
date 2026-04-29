@@ -1,0 +1,37 @@
+{
+  "common": {
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "create": "Criar",
+    "search": "Buscar",
+    "actions": "Ações",
+    "status": "Status",
+    "name": "Nome",
+    "description": "Descrição",
+    "yes": "Sim",
+    "no": "Não",
+    "dashboard": "Painel",
+    "settings": "Configurações"
+  },
+  "orders": {
+    "title": "Pedidos",
+    "new_order": "Novo Pedido",
+    "order_id": "ID do Pedido",
+    "customer": "Cliente",
+    "pickup": "Coleta",
+    "dropoff": "Entrega",
+    "driver": "Motorista",
+    "unassigned": "Não atribuído",
+    "dispatched": "Despachado",
+    "completed": "Concluído",
+    "canceled": "Cancelado"
+  },
+  "fleet": {
+    "drivers": "Motoristas",
+    "vehicles": "Veículos",
+    "new_driver": "Novo Motorista",
+    "new_vehicle": "Novo Veículo"
+  }
+}

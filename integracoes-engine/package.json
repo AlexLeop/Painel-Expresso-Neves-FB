@@ -1,0 +1,20 @@
+{
+  "name": "@fleetbase/integracoes-engine",
+  "version": "1.0.0",
+  "description": "Extensão Fleetbase para gerenciamento de integrações com parceiros (White Label).",
+  "keywords": [
+    "ember-addon",
+    "fleetbase-extension"
+  ],
+  "dependencies": {
+    "ember-cli-htmlbars": "^6.0.0",
+    "ember-cli-babel": "^7.26.6",
+    "ember-engines": "^0.8.22"
+  },
+  "ember": {
+    "edition": "octane"
+  },
+  "ember-addon": {
+    "configPath": "tests/dummy/config"
+  }
+}

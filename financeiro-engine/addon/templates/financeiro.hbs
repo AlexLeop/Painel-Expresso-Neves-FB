@@ -1,0 +1,14 @@
+<Layout::Section::Header @title="Financeiro" />
+
+<div class="flex flex-row p-4 space-x-4 bg-gray-50 border-b border-gray-200">
+  <LinkTo @route="financeiro.dashboard" class="px-4 py-2 font-semibold text-black hover:text-red-600">
+    Dashboard
+  </LinkTo>
+  <LinkTo @route="financeiro.motoristas" class="px-4 py-2 font-semibold text-black hover:text-red-600">
+    Gestão de Motoristas
+  </LinkTo>
+</div>
+
+<Layout::Section::Body>
+  {{outlet}}
+</Layout::Section::Body>

@@ -1,0 +1,53 @@
+<Layout::Section::Header @title="Catálogo de Integrações" @searchQuery={{this.searchQuery}} />
+
+<Layout::Section::Body>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+        {{#each @model as |integration|}}
+            <div class="border rounded-md shadow-sm bg-white dark:bg-gray-800 flex flex-col p-5">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                        {{integration.name}}
+                    </h3>
+                    <Badge @status={{integration.status}} />
+                </div>
+                
+                <div class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                    Provedor: <span class="font-mono">{{integration.provider}}</span>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">Client ID (Gateway Auth)</label>
+                    <div class="mt-1 font-mono text-xs bg-gray-100 dark:bg-gray-900 p-2 rounded">
+                        {{if integration.client_id integration.client_id "Não configurado"}}
+                    </div>
+                </div>
+
+                {{!-- Seção solicitada: Logs de Erro Recentes --}}
+                {{#if integration.last_error_log}}
+                    <div class="mt-auto bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-3 rounded-md">
+                        <div class="flex items-start">
+                            <FaIcon @icon="exclamation-triangle" class="text-red-500 mt-0.5 mr-2" />
+                            <div>
+                                <h4 class="text-xs font-bold text-red-800 dark:text-red-400">Último Erro (Gateway)</h4>
+                                <p class="text-xs text-red-700 dark:text-red-300 mt-1 line-clamp-2" title={{integration.last_error_log}}>
+                                    {{integration.last_error_log}}
+                                </p>
+                                <p class="text-[10px] text-red-500 mt-1">
+                                    Ocorreu em: {{moment-format integration.last_error_at "DD/MM/YYYY HH:mm:ss"}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {{/if}}
+
+                <div class="mt-4 flex justify-end space-x-2">
+                    <Button @type="default" @text="Configurar" @onClick={{fn this.configureIntegration integration}} />
+                </div>
+            </div>
+        {{else}}
+            <div class="col-span-full flex justify-center p-8">
+                <p class="text-gray-500">Nenhuma integração disponível no momento.</p>
+            </div>
+        {{/each}}
+    </div>
+</Layout::Section::Body>

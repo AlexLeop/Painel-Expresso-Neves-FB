@@ -1,0 +1,64 @@
+/* 
+ * Custom Branding Fleetbase Console (White Label)
+ * Tema: Preto e Vermelho 
+ */
+
+ :root {
+    /* Cores principais */
+    --primary-color: #D32F2F; /* Vermelho forte */
+    --primary-color-dark: #B71C1C;
+    --primary-color-light: #FFCDD2;
+    
+    --secondary-color: #212121; /* Preto/Cinza escuro */
+    
+    --bg-color-dark: #121212; /* Fundo escuro */
+    --surface-color-dark: #1E1E1E; /* Superfícies (cards, modais) */
+    
+    --text-primary-dark: #FFFFFF;
+    --text-secondary-dark: #B0B0B0;
+}
+
+/* Exemplo de override para o modo escuro do Tailwind/Ember do Fleetbase */
+
+/* Fundo geral da aplicação */
+body.dark-mode {
+    background-color: var(--bg-color-dark) !important;
+    color: var(--text-primary-dark) !important;
+}
+
+/* Sidebar e Header */
+.dark-mode .sidebar, 
+.dark-mode .header {
+    background-color: var(--surface-color-dark) !important;
+    border-color: #333 !important;
+}
+
+/* Botões Primários */
+.btn-primary, 
+.dark-mode .btn-primary {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color-dark) !important;
+    color: white !important;
+}
+
+.btn-primary:hover, 
+.dark-mode .btn-primary:hover {
+    background-color: var(--primary-color-dark) !important;
+}
+
+/* Links e textos destacados */
+.text-primary,
+.dark-mode .text-primary {
+    color: var(--primary-color) !important;
+}
+
+/* Badges e Tags */
+.badge-primary {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+}
+
+/* Loader / Spinner Customizado (se aplicável) */
+.spinner {
+    border-top-color: var(--primary-color) !important;
+}
