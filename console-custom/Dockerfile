@@ -17,27 +17,41 @@ COPY financeiro-engine /build-engine/financeiro-engine
 # Instala pnpm globalmente pois o console requer pnpm
 RUN npm install -g pnpm
 
-# 3. Adiciona os nossos engines como dependência local no projeto do console
+# 3. CRITICAL FIX: Atualiza overrides do pnpm no package.json para permitir versões recentes
+# A versão ^0.1.4 do ember-core NÃO tem getCompany() (semver 0.x limita a patches)
+# A versão 0.3.18 (latest) é a que contém getCompany() e outros fixes críticos
+RUN node -e " \
+  const pkg = require('./package.json'); \
+  pkg.pnpm = pkg.pnpm || {}; \
+  pkg.pnpm.overrides = pkg.pnpm.overrides || {}; \
+  pkg.pnpm.overrides['@fleetbase/ember-core'] = '0.3.18'; \
+  pkg.pnpm.overrides['@fleetbase/ember-ui'] = 'latest'; \
+  pkg.dependencies['@fleetbase/ember-core'] = '0.3.18'; \
+  pkg.dependencies['@fleetbase/ember-ui'] = 'latest'; \
+  require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, 4)); \
+  "
+
+# 4. Adiciona os nossos engines como dependência local no projeto do console
 RUN pnpm add "file:/build-engine/integracoes-engine"
 RUN pnpm add "file:/build-engine/financeiro-engine"
 
 # O pnpm hoisting causa problemas em polyfills implícitos do ember-file-upload
 RUN pnpm add "ember-tracked-storage-polyfill"
 
-# 4. Instala todas as dependências do console (incluindo os nossos addons)
+# 5. Instala todas as dependências do console (incluindo os nossos addons)
 RUN pnpm install
 
-# 5. Configura as variáveis de ambiente em tempo de build para o Ember injetar no HTML
+# 6. Configura as variáveis de ambiente em tempo de build para o Ember injetar no HTML
 # CORRIGIDO: API_HOST agora aponta para o backend PHP/Laravel, NÃO para o próprio console
 ENV API_HOST="https://expresso-neves-api.a3rpjn.easypanel.host"
 ENV SOCKETCLUSTER_HOST="expresso-neves-expresso-neves-console.a3rpjn.easypanel.host"
 ENV SOCKETCLUSTER_PORT="443"
 ENV SOCKETCLUSTER_SECURE="true"
 
-# 6. Roda o build de produção do Ember
+# 7. Roda o build de produção do Ember
 RUN pnpm run build
 
-# 7. Verificação: se o build falhou silenciosamente, o Docker para aqui com erro explícito
+# 8. Verificação: se o build falhou silenciosamente, o Docker para aqui com erro explícito
 RUN test -f /build/dist/index.html || (echo "ERRO: BUILD FALHOU - dist/index.html não encontrado!" && exit 1)
 
 # STAGE 2: Produção (Nginx PURO)
