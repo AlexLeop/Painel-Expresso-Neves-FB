@@ -14,7 +14,7 @@ export const getDbConnection = async () => {
     const connection = await pool.getConnection();
     return connection;
   } catch (error) {
-    logger.error('Failed to connect to MySQL fallback', error);
+    logger.error(error, 'Failed to connect to MySQL fallback');
     throw error;
   }
 };

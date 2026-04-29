@@ -100,7 +100,7 @@ export class PricingEngine {
       });
       rates = response.data;
     } catch (error: any) {
-      logger.warn(`API call for service rates failed or timed out for company ${companyUuid}. Falling back to MySQL.`, error.message);
+      logger.warn({ err: error.message }, `API call for service rates failed or timed out for company ${companyUuid}. Falling back to MySQL.`);
       
       // 3. MySQL Fallback
       rates = await this.getRatesFromMySQL(companyUuid);
@@ -131,8 +131,8 @@ export class PricingEngine {
         try {
           // O Fleetbase guarda JSON no banco (seja stringificado ou como tipo JSON)
           parsedMetadata = typeof row.meta === 'string' ? JSON.parse(row.meta) : (row.meta || {});
-        } catch (e) {
-          logger.error('Failed to parse metadata JSON', e);
+        } catch (e: any) {
+          logger.error(e, 'Failed to parse metadata JSON');
         }
 
         return {
@@ -148,8 +148,8 @@ export class PricingEngine {
       });
 
       return rates;
-    } catch (error) {
-      logger.error('MySQL Service Rates fetch failed', error);
+    } catch (error: any) {
+      logger.error(error, 'MySQL Service Rates fetch failed');
       return [];
     } finally {
       if (connection) connection.release();

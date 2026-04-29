@@ -26,8 +26,8 @@ export const financeiroApiRoutes: FastifyPluginAsync = async (server: FastifyIns
           }
         }
       };
-    } catch (error) {
-      logger.error('Error fetching dashboard metrics', error);
+    } catch (error: any) {
+      logger.error(error, 'Error fetching dashboard metrics');
       return reply.status(500).send({ error: 'Failed to fetch financial metrics' });
     }
   });

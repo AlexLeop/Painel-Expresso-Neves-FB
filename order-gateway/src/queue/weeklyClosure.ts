@@ -132,8 +132,7 @@ export class WeeklyClosureService {
              const pixType = dMeta.pix_key_type;
 
              if (pixKey && pixType) {
-                // Chave de idempotência (ex: closure_lojaId_driverId_2024-05-10)
-                const idempotencyKey = \`closure_\${companyUuid}_\${dRow.uuid}_\${endDateString}\`;
+                const idempotencyKey = `closure_${companyUuid}_${dRow.uuid}_${endDateString}`;
                 
                 logger.info(`Enqueuing PIX Transfer of R$ ${netPayout} to Driver ${dRow.uuid} (Vales deduzidos: R$ ${valesDeduction})`);
                 
@@ -182,11 +181,11 @@ export class WeeklyClosureService {
         }
       };
 
-      logger.info('Weekly Closure Completed', closureReport);
+      logger.info(closureReport, 'Weekly Closure Completed');
       return closureReport;
 
-    } catch (error) {
-      logger.error('Error executing weekly closure', error);
+    } catch (error: any) {
+      logger.error(error, 'Error executing weekly closure');
       throw error;
     } finally {
       if (connection) connection.release();
