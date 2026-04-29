@@ -1,78 +1,56 @@
 # STAGE 1: Builder
-# Usamos Node.js para clonar o console do Fleetbase e compilar junto com os nossos engines
+# Usamos o MONOREPO do Fleetbase (versões coordenadas) em vez do repo standalone antigo
 FROM node:18-alpine AS builder
 
-# Instala git e ferramentas de compilação nativas
 RUN apk add --no-cache git python3 make g++
 
 WORKDIR /build
 
-# 1. Clona o Console oficial do Fleetbase
-RUN git clone https://github.com/fleetbase/console.git .
+# 1. Clona o MONOREPO oficial (contém console v0.7.37 com ember-core 0.3.18)
+RUN git clone --depth 1 https://github.com/fleetbase/fleetbase.git /tmp/fleetbase
 
-# 2. Copia os nossos Engines locais para dentro do builder
+# 2. Copia apenas o diretório console do monorepo
+RUN cp -r /tmp/fleetbase/console/* . && cp -r /tmp/fleetbase/console/.* . 2>/dev/null || true
+RUN rm -rf /tmp/fleetbase
+
+# 3. Copia os nossos Engines locais para dentro do builder
 COPY integracoes-engine /build-engine/integracoes-engine
 COPY financeiro-engine /build-engine/financeiro-engine
 
-# Instala pnpm globalmente pois o console requer pnpm
-RUN npm install -g pnpm
+# Instala pnpm (versão compatível com o monorepo)
+RUN npm install -g pnpm@9
 
-# 3. CRITICAL FIX: Atualiza overrides do pnpm no package.json para permitir versões recentes
-# A versão ^0.1.4 do ember-core NÃO tem getCompany() (semver 0.x limita a patches)
-# A versão 0.3.18 (latest) é a que contém getCompany() e outros fixes críticos
-RUN node -e " \
-  const pkg = require('./package.json'); \
-  pkg.pnpm = pkg.pnpm || {}; \
-  pkg.pnpm.overrides = pkg.pnpm.overrides || {}; \
-  pkg.pnpm.overrides['@fleetbase/ember-core'] = '0.3.18'; \
-  pkg.pnpm.overrides['@fleetbase/ember-ui'] = 'latest'; \
-  pkg.dependencies['@fleetbase/ember-core'] = '0.3.18'; \
-  pkg.dependencies['@fleetbase/ember-ui'] = 'latest'; \
-  require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, 4)); \
-  "
-
-# 4. Adiciona os nossos engines como dependência local no projeto do console
+# 4. Adiciona os nossos engines como dependência local
 RUN pnpm add "file:/build-engine/integracoes-engine"
 RUN pnpm add "file:/build-engine/financeiro-engine"
 
-# O pnpm hoisting causa problemas em polyfills implícitos do ember-file-upload
-RUN pnpm add "ember-tracked-storage-polyfill"
-
-# 5. Instala todas as dependências do console (incluindo os nossos addons)
+# 5. Instala todas as dependências
 RUN pnpm install
 
-# 6. Configura as variáveis de ambiente em tempo de build para o Ember injetar no HTML
-# CORRIGIDO: API_HOST agora aponta para o backend PHP/Laravel, NÃO para o próprio console
+# 6. Configura as variáveis de ambiente para o build
 ENV API_HOST="https://expresso-neves-api.a3rpjn.easypanel.host"
 ENV SOCKETCLUSTER_HOST="expresso-neves-expresso-neves-console.a3rpjn.easypanel.host"
 ENV SOCKETCLUSTER_PORT="443"
 ENV SOCKETCLUSTER_SECURE="true"
 
-# 7. Roda o build de produção do Ember
-RUN pnpm run build
+# 7. Build de produção do Ember
+RUN pnpm run build --environment=production
 
-# 8. Verificação: se o build falhou silenciosamente, o Docker para aqui com erro explícito
-RUN test -f /build/dist/index.html || (echo "ERRO: BUILD FALHOU - dist/index.html não encontrado!" && exit 1)
+# 8. Verificação do build
+RUN test -f /build/dist/index.html || (echo "ERRO: BUILD FALHOU!" && exit 1)
 
-# STAGE 2: Produção (Nginx PURO)
-# CORRIGIDO: Usar nginx:alpine puro em vez de fleetbase/fleetbase-console:latest
-# A imagem fleetbase/fleetbase-console contém assets PRÉ-COMPILADOS antigos que
-# sobrescreviam/conflitavam com o nosso build, causando o erro getCompany
+# STAGE 2: Produção (Nginx puro)
 FROM nginx:alpine
 
 LABEL maintainer="Expresso Neves/Fleetbase"
-LABEL description="Console Fleetbase Customizado (Com Engines Integrados)"
 
-# Copia APENAS o resultado do nosso build compilado
 COPY --from=builder /build/dist /usr/share/nginx/html/
 
-# Copia o CSS de branding customizado
+# Branding CSS
 COPY console-custom/branding.css /usr/share/nginx/html/assets/branding.css
-
-# Injeta o CSS de branding no index.html
 RUN sed -i 's|</head>|<link rel="stylesheet" href="/assets/branding.css"></head>|g' /usr/share/nginx/html/index.html
 
-# Configuração do Nginx
+# Nginx config
 RUN printf '%s\n' \
     'server {' \
     '    listen 4200;' \
