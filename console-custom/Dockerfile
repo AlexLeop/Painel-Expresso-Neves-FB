@@ -28,7 +28,13 @@ RUN pnpm add "ember-tracked-storage-polyfill"
 # 4. Instala todas as dependências do console (incluindo os nossos addons)
 RUN pnpm install
 
-# 5. Roda o build de produção do Ember
+# 5. Configura as variáveis de ambiente em tempo de build para o Ember injetar no HTML
+ENV API_HOST="https://expresso-neves-expresso-neves-console.a3rpjn.easypanel.host"
+ENV SOCKETCLUSTER_HOST="expresso-neves-expresso-neves-console.a3rpjn.easypanel.host"
+ENV SOCKETCLUSTER_PORT="443"
+ENV SOCKETCLUSTER_SECURE="true"
+
+# 6. Roda o build de produção do Ember
 RUN pnpm run build
 
 # STAGE 2: Produção (Nginx Proxy)
@@ -87,10 +93,5 @@ RUN printf '%s\n' \
 
 EXPOSE 4200
 
-# O Entrypoint cria o config a partir de variáveis de ambiente do EasyPanel no boot!
-# Variáveis que o usuário DEVE preencher no EasyPanel para o Console:
-# API_HOST=https://seu-dominio.com
-# SOCKETCLUSTER_HOST=seu-dominio.com
-# SOCKETCLUSTER_PORT=443
-# SOCKETCLUSTER_SECURE=true
-CMD ["sh", "-c", "echo \"{\\\"API_HOST\\\":\\\"${API_HOST}\\\", \\\"SOCKETCLUSTER_HOST\\\":\\\"${SOCKETCLUSTER_HOST}\\\", \\\"SOCKETCLUSTER_PORT\\\":\\\"${SOCKETCLUSTER_PORT:-38000}\\\", \\\"SOCKETCLUSTER_SECURE\\\":${SOCKETCLUSTER_SECURE:-false}}\" > /usr/share/nginx/html/fleetbase.config.json && nginx -g 'daemon off;'"]
+# O Nginx já é o ENTRYPOINT da imagem oficial, então não precisamos de CMD complexo
+CMD ["nginx", "-g", "daemon off;"]
