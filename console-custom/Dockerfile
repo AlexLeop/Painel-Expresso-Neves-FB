@@ -15,9 +15,10 @@ RUN git clone https://github.com/fleetbase/console.git .
 COPY integracoes-engine /build-engine/integracoes-engine
 COPY financeiro-engine /build-engine/financeiro-engine
 
-# 3. Faz o link dos nossos engines no projeto do console
-RUN yarn add link:/build-engine/integracoes-engine
-RUN yarn add link:/build-engine/financeiro-engine
+# 3. Adiciona os nossos engines como dependência local no projeto do console
+# Usamos -W pois o repositório do Fleetbase Console é um Yarn Workspace
+RUN yarn add "file:/build-engine/integracoes-engine" -W
+RUN yarn add "file:/build-engine/financeiro-engine" -W
 
 # 4. Instala todas as dependências do console (incluindo os nossos addons recém-linkados)
 RUN yarn install
