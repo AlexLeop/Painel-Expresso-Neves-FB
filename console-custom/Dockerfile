@@ -87,4 +87,10 @@ RUN printf '%s\n' \
 
 EXPOSE 4200
 
-CMD ["sh", "-c", "echo '{\"API_HOST\":\"/\"}' > /usr/share/nginx/html/fleetbase.config.json && nginx -g 'daemon off;'"]
+# O Entrypoint cria o config a partir de variáveis de ambiente do EasyPanel no boot!
+# Variáveis que o usuário DEVE preencher no EasyPanel para o Console:
+# API_HOST=https://seu-dominio.com
+# SOCKETCLUSTER_HOST=seu-dominio.com
+# SOCKETCLUSTER_PORT=443
+# SOCKETCLUSTER_SECURE=true
+CMD ["sh", "-c", "echo \"{\\\"API_HOST\\\":\\\"${API_HOST}\\\", \\\"SOCKETCLUSTER_HOST\\\":\\\"${SOCKETCLUSTER_HOST}\\\", \\\"SOCKETCLUSTER_PORT\\\":\\\"${SOCKETCLUSTER_PORT:-38000}\\\", \\\"SOCKETCLUSTER_SECURE\\\":${SOCKETCLUSTER_SECURE:-false}}\" > /usr/share/nginx/html/fleetbase.config.json && nginx -g 'daemon off;'"]
