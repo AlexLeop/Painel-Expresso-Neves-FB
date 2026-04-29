@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  # ==========================================
+  # 1. SERVIÇO BFF: Order Gateway
+  # ==========================================
+  order-gateway:
+    build:
+      context: ./order-gateway
+    container_name: expresso_neves_order_gateway
+    restart: unless-stopped
+    # No EasyPanel, o roteamento é via Traefik/Caddy interno. Não amarre portas no host.
+    expose:
+      - "3000"
+    environment:
+      - NODE_ENV=production
+      - ASAAS_API_KEY=${ASAAS_API_KEY:-sandbox}
+      # Ajuste as credenciais abaixo para bater com o MySQL do Fleetbase no EasyPanel
+      - REDIS_URL=redis://fleetbase-redis:6379
+      - DB_CONNECTION=mysql://user:pass@fleetbase-mysql:3306/fleetbase
+      - JWT_SECRET=${JWT_SECRET:-super-secret-key}
+      - FLEETBASE_API_URL=http://fleetbase-api:8000
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+    networks:
+      - fleetbase_network
+
+  # ==========================================
+  # 2. CONSOLE CUSTOMIZADO (Ember Engines)
+  # ==========================================
+  console-custom:
+    build:
+      context: .
+      dockerfile: console-custom/Dockerfile
+    container_name: expresso_neves_console
+    restart: unless-stopped
+    expose:
+      - "4200"
+    depends_on:
+      - order-gateway
+    environment:
+      - API_HOST=https://api.expressoneves.com.br
+    networks:
+      - fleetbase_network
+
+networks:
+  fleetbase_network:
+    external: true
