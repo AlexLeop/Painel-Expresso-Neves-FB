@@ -15,11 +15,11 @@ services:
     environment:
       - NODE_ENV=production
       - ASAAS_API_KEY=${ASAAS_API_KEY:-sandbox}
-      # Ajuste as credenciais abaixo para bater com o MySQL do Fleetbase no EasyPanel
-      - REDIS_URL=redis://fleetbase-redis:6379
-      - DB_CONNECTION=mysql://user:pass@fleetbase-mysql:3306/fleetbase
+      # Ajustado para a rede do projeto expresso_neves no EasyPanel
+      - REDIS_URL=redis://:f08ead003f97b11d6490@expresso_neves_redis:6379
+      - DB_CONNECTION=mysql://mysql:admin@expresso_neves_mysql:3306/expresso_neves
       - JWT_SECRET=${JWT_SECRET:-super-secret-key}
-      - FLEETBASE_API_URL=http://fleetbase-api:8000
+      - FLEETBASE_API_URL=http://expresso_neves_api:8000
     deploy:
       resources:
         limits:
