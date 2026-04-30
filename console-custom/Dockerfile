@@ -16,6 +16,7 @@ RUN rm -rf /tmp/fleetbase
 # 3. Copia os nossos Engines locais para dentro do builder
 COPY integracoes-engine /build-engine/integracoes-engine
 COPY financeiro-engine /build-engine/financeiro-engine
+COPY console-custom/templates/dashboard.hbs /build/app/templates/console/home.hbs
 
 # Instala pnpm (versão compatível com o monorepo)
 RUN npm install -g pnpm@9

@@ -12,26 +12,37 @@
     "description": "Descrição",
     "yes": "Sim",
     "no": "Não",
-    "dashboard": "Painel",
+    "dashboard": "Painel de Operações",
     "settings": "Configurações"
   },
+  "finance": {
+    "title": "Financeiro",
+    "production": "Produção Real",
+    "guaranteed": "Garantido Mínimo",
+    "margin": "Margem (Spread)",
+    "supervision_fee": "Taxa de Supervisão",
+    "weekly_closure": "Fechamento Semanal",
+    "net_total": "Total Líquido",
+    "earnings": "Produção",
+    "service_rates": "Taxas de Serviço"
+  },
   "orders": {
-    "title": "Pedidos",
-    "new_order": "Novo Pedido",
-    "order_id": "ID do Pedido",
-    "customer": "Cliente",
+    "title": "Corridas",
+    "new_order": "Nova Entrega",
+    "order_id": "ID",
+    "customer": "Lojista",
     "pickup": "Coleta",
     "dropoff": "Entrega",
-    "driver": "Motorista",
-    "unassigned": "Não atribuído",
-    "dispatched": "Despachado",
-    "completed": "Concluído",
-    "canceled": "Cancelado"
+    "driver": "Motoboy",
+    "unassigned": "Aguardando",
+    "dispatched": "Em Rota",
+    "completed": "Finalizada",
+    "canceled": "Cancelada"
   },
-  "fleet": {
-    "drivers": "Motoristas",
-    "vehicles": "Veículos",
-    "new_driver": "Novo Motorista",
-    "new_vehicle": "Novo Veículo"
+  "dashboard": {
+    "weekly_billing": "Faturamento Semanal",
+    "active_now": "Ativas Agora",
+    "completed_volume": "Volume Finalizado",
+    "drivers_online": "Motoboys em Rota"
   }
 }

@@ -1,64 +1,82 @@
 /* 
- * Custom Branding Fleetbase Console (White Label)
- * Tema: Preto e Vermelho 
- */
+  FLEETBASE PREMIUM SKIN: BLACK PIANO & VIBRANT RED 
+  Author: UI/UX Architect Specialist
+*/
 
- :root {
-    /* Cores principais */
-    --primary-color: #D32F2F; /* Vermelho forte */
-    --primary-color-dark: #B71C1C;
-    --primary-color-light: #FFCDD2;
-    
-    --secondary-color: #212121; /* Preto/Cinza escuro */
-    
-    --bg-color-dark: #121212; /* Fundo escuro */
-    --surface-color-dark: #1E1E1E; /* Superfícies (cards, modais) */
-    
-    --text-primary-dark: #FFFFFF;
-    --text-secondary-dark: #B0B0B0;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Montserrat:wght@700;800&display=swap');
+
+:root {
+    --bg-piano: #0A0A0A;
+    --bg-card: rgba(22, 22, 22, 0.7);
+    --bg-surface: #121212;
+    --accent-red: #EE0000;
+    --accent-red-hover: #CC0000;
+    --text-primary: #FFFFFF;
+    --text-secondary: #A0A0A0;
+    --border-subtle: rgba(255, 255, 255, 0.05);
+    --glass-effect: blur(12px) saturate(180%);
+    --card-radius: 12px;
 }
 
-/* Exemplo de override para o modo escuro do Tailwind/Ember do Fleetbase */
-
-/* Fundo geral da aplicação */
-body.dark-mode {
-    background-color: var(--bg-color-dark) !important;
-    color: var(--text-primary-dark) !important;
+/* 1. RESET & CLEANUP (image_f02441.png reference) */
+.fleetbase-blog-widget, 
+.github-star-container, 
+.developer-docs-card,
+.fleetbase-console-upsell,
+.border-gray-200, .border-gray-300 { 
+    display: none !important; 
 }
 
-/* Sidebar e Header */
-.dark-mode .sidebar, 
-.dark-mode .header {
-    background-color: var(--surface-color-dark) !important;
-    border-color: #333 !important;
+body, .fleetbase-console-container {
+    background-color: var(--bg-piano) !important;
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* Botões Primários */
-.btn-primary, 
-.dark-mode .btn-primary {
-    background-color: var(--primary-color) !important;
-    border-color: var(--primary-color-dark) !important;
+/* 2. GLASSMORPHISM CARDS */
+.custom-card {
+    background: var(--bg-card);
+    backdrop-filter: var(--glass-effect);
+    -webkit-backdrop-filter: var(--glass-effect);
+    border-radius: var(--card-radius);
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.custom-card:hover {
+    border-color: rgba(238, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+/* 3. PREMIUM TYPOGRAPHY */
+h1, h2, h3, .brand-font {
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: -0.02em;
+}
+
+/* 4. VIBRANT RED BUTTONS & ELEMENTS */
+.btn-primary-red {
+    background-color: var(--accent-red) !important;
     color: white !important;
+    border: none !important;
+    border-radius: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    padding: 10px 20px;
+    transition: background 0.2s;
 }
 
-.btn-primary:hover, 
-.dark-mode .btn-primary:hover {
-    background-color: var(--primary-color-dark) !important;
+.btn-primary-red:hover {
+    background-color: var(--accent-red-hover) !important;
+    box-shadow: 0 0 15px rgba(238, 0, 0, 0.4);
 }
 
-/* Links e textos destacados */
-.text-primary,
-.dark-mode .text-primary {
-    color: var(--primary-color) !important;
-}
-
-/* Badges e Tags */
-.badge-primary {
-    background-color: var(--primary-color) !important;
-    color: white !important;
-}
-
-/* Loader / Spinner Customizado (se aplicável) */
-.spinner {
-    border-top-color: var(--primary-color) !important;
-}
+/* Scrollbar Customization */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-piano); }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-red); }
